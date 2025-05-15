@@ -35,7 +35,7 @@
 
     - name: Deploy Intune first-login installer globally
       ansible.builtin.copy:
-        src: files/install_intune.sh
-        dest: /etc/profile.d/install_intune.sh
+        src: files/install_htop.sh
+        dest: /etc/profile.d/install_htop.sh
         mode: '0755'
 
