@@ -7,3 +7,5 @@ users:
     sudo: false
   - name: tim
     sudo: false
+  - name: sebastian
+    sudo: true

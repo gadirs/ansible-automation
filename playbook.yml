@@ -32,6 +32,7 @@
       when: not item.sudo
       loop: "{{ users }}"
 
+
     - name: Deploy Intune first-login installer globally
       ansible.builtin.copy:
         src: files/install_intune.sh
