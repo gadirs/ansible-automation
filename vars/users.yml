@@ -1,0 +1,9 @@
+users:
+  - name: gadir
+    sudo: true
+  - name: john
+    sudo: true
+  - name: mary
+    sudo: false
+  - name: tim
+    sudo: false

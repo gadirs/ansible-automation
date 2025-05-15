@@ -1,0 +1,40 @@
+---
+- name: Company User Setup with Intune
+  hosts: local
+  become: true
+
+  vars_files:
+    - vars/users.yml
+
+  tasks:
+    - name: Ensure users exist
+      ansible.builtin.user:
+        name: "{{ item.name }}"
+        shell: /bin/bash
+        create_home: yes
+      loop: "{{ users }}"
+
+    - name: Grant sudo to allowed users
+      ansible.builtin.user:
+        name: "{{ item.name }}"
+        groups: sudo
+        append: yes
+      when: item.sudo
+      loop: "{{ users }}"
+
+    - name: Remove users from sudo group if they shouldn't have it
+      ansible.builtin.shell: |
+        if id -nG {{ item.name }} | grep -qw sudo; then
+          gpasswd -d {{ item.name }} sudo
+        fi
+      args:
+        warn: false
+      when: not item.sudo
+      loop: "{{ users }}"
+
+    - name: Deploy Intune first-login installer globally
+      ansible.builtin.copy:
+        src: files/install_intune.sh
+        dest: /etc/profile.d/install_intune.sh
+        mode: '0755'
+
